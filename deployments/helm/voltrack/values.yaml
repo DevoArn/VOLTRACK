@@ -1,0 +1,96 @@
+# -- Number of pods (ignored when autoscaling.enabled=true)
+replicaCount: 2
+
+image:
+  # Published by CI; overridden with the exact digest on deploy.
+  repository: ghcr.io/devoarn/voltrack
+  # Defaults to Chart.appVersion
+  tag: ''
+  # Immutable deploys: a digest (sha256:...) takes precedence over the tag
+  digest: ''
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ''
+fullnameOverride: ''
+
+serviceAccount:
+  create: true
+  # The app never talks to the Kubernetes API
+  automount: false
+  annotations: {}
+  name: ''
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 101
+  runAsGroup: 101
+  fsGroup: 101
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop: [ALL]
+
+service:
+  type: ClusterIP
+  port: 80
+
+# AudioWorklet requires a secure context: expose the app over HTTPS (or localhost).
+ingress:
+  enabled: false
+  className: ''
+  annotations: {}
+  # cert-manager.io/cluster-issuer: letsencrypt
+  hosts:
+    - host: voltrack.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: voltrack-tls
+  #    hosts: [voltrack.example.com]
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 16Mi
+  limits:
+    cpu: 200m
+    memory: 64Mi
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  periodSeconds: 10
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  periodSeconds: 5
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+networkPolicy:
+  # Only allow ingress to the HTTP port; a static site needs no egress
+  enabled: false
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []

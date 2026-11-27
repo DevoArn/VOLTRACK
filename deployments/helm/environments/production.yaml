@@ -1,0 +1,35 @@
+# Production: highly available, autoscaled, spread across nodes. Deployed from version tags
+# after manual approval on the "production" GitHub environment.
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+networkPolicy:
+  enabled: true
+
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: voltrack
+
+# Enable once you have an ingress controller + DNS (HTTPS is required for Web Audio):
+ingress:
+  enabled: false
+  # className: nginx
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
+  # hosts:
+  #   - host: voltrack.example.com
+  #     paths: [{ path: /, pathType: Prefix }]
+  # tls:
+  #   - secretName: voltrack-tls
+  #     hosts: [voltrack.example.com]

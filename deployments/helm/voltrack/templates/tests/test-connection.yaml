@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "voltrack.fullname" . }}-test"
+  labels:
+    {{- include "voltrack.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  restartPolicy: Never
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 65534
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: smoke
+      image: busybox:1.36
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: [ALL]
+      command: [sh, -c]
+      args:
+        - |
+          set -e
+          base="http://{{ include "voltrack.fullname" . }}:{{ .Values.service.port }}"
+          wget -q -O - "$base/healthz" | grep -q ok
+          wget -q -O - "$base/version.json" | grep -q '"name": "voltrack"'
+          wget -q -O /dev/null "$base/"
+          echo "smoke test passed"

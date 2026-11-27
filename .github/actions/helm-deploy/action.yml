@@ -1,0 +1,78 @@
+name: Helm deploy
+description: >-
+  Deploys an immutable image digest with Helm (atomic: rolls back automatically if the rollout
+  fails), runs the chart's smoke test and verifies the running build.
+
+inputs:
+  kubeconfig:
+    description: Base64-encoded kubeconfig for the target cluster
+    required: true
+  namespace:
+    description: Target namespace
+    required: true
+  values-file:
+    description: Environment values file
+    required: true
+  image:
+    description: Image repository (e.g. ghcr.io/owner/repo)
+    required: true
+  digest:
+    description: Image digest (sha256:...)
+    required: true
+  release:
+    description: Helm release name
+    default: voltrack
+
+runs:
+  using: composite
+  steps:
+    - name: Configure cluster access
+      shell: bash
+      env:
+        KUBECONFIG_B64: ${{ inputs.kubeconfig }}
+      run: |
+        if [ -z "$KUBECONFIG_B64" ]; then
+          echo "::error::KUBE_CONFIG secret is not set for this environment"
+          exit 1
+        fi
+        mkdir -p "$HOME/.kube"
+        printf '%s' "$KUBECONFIG_B64" | base64 -d > "$HOME/.kube/config"
+        chmod 600 "$HOME/.kube/config"
+        kubectl version --output=yaml | grep -m1 gitVersion
+
+    - name: Helm upgrade (atomic)
+      shell: bash
+      env:
+        RELEASE: ${{ inputs.release }}
+        NAMESPACE: ${{ inputs.namespace }}
+        VALUES: ${{ inputs.values-file }}
+        IMAGE: ${{ inputs.image }}
+        DIGEST: ${{ inputs.digest }}
+      run: |
+        helm upgrade --install "$RELEASE" deployments/helm/voltrack \
+          --namespace "$NAMESPACE" --create-namespace \
+          --values "$VALUES" \
+          --set image.repository="$IMAGE" \
+          --set image.digest="$DIGEST" \
+          --set image.tag="sha-${GITHUB_SHA::7}" \
+          --atomic --wait --timeout 5m \
+          --history-max 10
+
+    - name: Smoke test + verify the running build
+      shell: bash
+      env:
+        RELEASE: ${{ inputs.release }}
+        NAMESPACE: ${{ inputs.namespace }}
+      run: |
+        helm test "$RELEASE" --namespace "$NAMESPACE" --logs
+        kubectl -n "$NAMESPACE" port-forward "svc/$RELEASE" 8080:80 >/dev/null 2>&1 &
+        for _ in $(seq 1 20); do curl -fsS localhost:8080/healthz && break; sleep 1; done
+        live="$(curl -fsS localhost:8080/version.json | jq -r .commit)"
+        if [ "$live" != "$GITHUB_SHA" ]; then
+          echo "::error::cluster serves $live, expected $GITHUB_SHA"
+          exit 1
+        fi
+        {
+          echo "### Deployed to \`$NAMESPACE\`"
+          echo "Commit \`$live\` · release \`$RELEASE\` revision $(helm -n "$NAMESPACE" history "$RELEASE" --max 1 -o json | jq -r '.[0].revision')"
+        } >> "$GITHUB_STEP_SUMMARY"

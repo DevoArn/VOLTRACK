@@ -1,0 +1,1086 @@
+/* ============================================================
+   VOLTRACK — early-internet / 90s desktop styling
+   Silver chrome, bevelled buttons, sunken fields, navy title bars,
+   system fonts, blue underlined links. No gradients, no glow, no rounded cards.
+   ============================================================ */
+:root {
+  --silver: #c0c0c0;
+  --silver-lt: #dfdfdf;
+  --shadow: #808080;
+  --black: #000000;
+  --white: #ffffff;
+  --navy: #000080;
+  --teal: #008080;
+  --link: #0000ee;
+  --visited: #551a8b;
+  --text: #000000;
+  --dim: #404040;
+  --dimmer: #808080;
+  --dial: #000080;
+  --amber: #000080;
+  --green: #00ff00;
+  --font-ui: Tahoma, 'Microsoft Sans Serif', 'MS Sans Serif', Verdana, Arial, sans-serif;
+  --font-head: 'Times New Roman', Times, serif;
+  --font-mono: 'Courier New', Courier, monospace;
+  --raised: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+  --sunken: inset -1px -1px #ffffff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px #808080;
+  --topbar-h: 34px;
+  --sidebar-w: 190px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--silver);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button,
+select,
+input {
+  font-family: inherit;
+  font-size: 11px;
+  color: inherit;
+}
+
+a {
+  color: var(--link);
+}
+
+a:visited {
+  color: var(--visited);
+}
+
+#app {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  grid-template-rows: var(--topbar-h) 1fr;
+  height: 100vh;
+}
+
+/* -------------------------------------------------------- toolbar */
+.topbar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px;
+  background: var(--silver);
+  box-shadow:
+    inset 0 -1px var(--shadow),
+    inset 0 -2px var(--white);
+  border-bottom: 1px solid var(--black);
+  position: relative;
+  z-index: 20;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 0 8px 0 4px;
+  min-width: 150px;
+}
+
+.logo {
+  font-family: var(--font-head);
+  font-weight: bold;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--navy);
+}
+
+.tagline {
+  font-size: 10px;
+  color: var(--dim);
+}
+
+.tb-group {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding-left: 8px;
+  margin-left: 2px;
+  border-left: 1px solid var(--shadow);
+  box-shadow: -1px 0 0 var(--white) inset;
+  height: 24px;
+}
+
+.tb-right {
+  margin-left: auto;
+  gap: 6px;
+}
+
+.tb-label {
+  font-size: 11px;
+  color: var(--text);
+  margin: 0 2px 0 4px;
+}
+
+.tb-btn,
+.power-btn,
+.power-big {
+  height: 23px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 0;
+  background: var(--silver);
+  box-shadow: var(--raised);
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tb-btn:active,
+.power-btn:active,
+.power-big:active,
+.tb-btn.on,
+.power-btn.on {
+  box-shadow: var(--sunken);
+  padding-top: 1px;
+}
+
+.tb-btn:focus-visible {
+  outline: 1px dotted var(--black);
+  outline-offset: -4px;
+}
+
+.tb-icon {
+  width: 23px;
+  padding: 0;
+  font-weight: bold;
+}
+
+.tb-select {
+  height: 21px;
+  min-width: 150px;
+  border-radius: 0;
+  border: none;
+  background: var(--white);
+  box-shadow: var(--sunken);
+  padding: 0 4px;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text) !important;
+}
+
+/* sunken read-outs: green-on-black like a 90s terminal */
+.lcd {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 18px;
+  color: var(--green);
+  background: var(--black);
+  padding: 0 6px;
+  min-width: 48px;
+  text-align: center;
+  box-shadow: var(--sunken);
+  border: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.tb-lcd {
+  height: 21px;
+  line-height: 17px;
+  min-width: 54px;
+  cursor: default;
+}
+
+#cable-op {
+  width: 80px;
+}
+
+.power-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.power-led {
+  width: 8px;
+  height: 8px;
+  background: #400000;
+  border: 1px solid var(--black);
+}
+
+.power-btn.on .power-led,
+.power-big .power-led {
+  background: #ff0000;
+}
+
+/* --------------------------------------------------------- sidebar */
+.sidebar {
+  grid-row: 2;
+  overflow-y: auto;
+  padding: 6px;
+  background: var(--silver);
+  border-right: 1px solid var(--black);
+  z-index: 10;
+}
+
+.sidebar-title {
+  font-family: var(--font-head);
+  font-weight: bold;
+  font-size: 15px;
+  color: var(--navy);
+  padding: 2px 2px 4px;
+  border-bottom: 2px groove var(--white);
+  margin-bottom: 6px;
+}
+
+#module-list {
+  background: var(--white);
+  box-shadow: var(--sunken);
+  padding: 6px 4px 6px 6px;
+}
+
+.cat {
+  margin-bottom: 6px;
+}
+
+.cat-title {
+  font-weight: bold;
+  font-size: 11px;
+  color: var(--black);
+  padding: 2px 0;
+}
+
+.mod-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  padding: 1px 0 1px 8px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: var(--link);
+  text-decoration: underline;
+}
+
+.mod-btn:hover {
+  color: #ff0000;
+}
+
+.mod-btn:active {
+  color: var(--visited);
+}
+
+.mod-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--accent);
+  border: 1px solid var(--black);
+  flex: none;
+}
+
+.mod-name {
+  flex: 1;
+}
+
+.mod-hp {
+  font-size: 10px;
+  color: var(--dimmer);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.help {
+  margin-top: 8px;
+  padding: 6px 4px;
+  color: var(--text);
+  font-size: 11px;
+  line-height: 1.4;
+  border-top: 2px groove var(--white);
+}
+
+.help-title {
+  font-weight: bold;
+  margin-top: 6px;
+}
+
+.help p {
+  margin: 2px 0 0;
+}
+
+/* -------------------------------------------------------- viewport */
+.viewport {
+  grid-row: 2;
+  overflow: auto;
+  position: relative;
+  background: var(--teal);
+}
+
+.viewport.panning {
+  cursor: move;
+}
+
+.canvas-sizer {
+  position: relative;
+}
+
+.rack-canvas {
+  position: absolute;
+  inset: 0 auto auto 0;
+  transform-origin: 0 0;
+  cursor: default;
+}
+
+/* ------------------------------------------------------ eurorack case */
+.case {
+  position: absolute;
+  background: #404040;
+  border: 2px solid var(--black);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.cheek {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  background: var(--silver);
+  box-shadow: var(--raised);
+}
+
+.cheek-l {
+  left: 0;
+}
+
+.cheek-r {
+  right: 0;
+}
+
+.case-badge {
+  position: absolute;
+  bottom: -18px;
+  right: 2px;
+  font-size: 11px;
+  color: var(--white);
+}
+
+.case-row {
+  position: absolute;
+  background: #202020;
+}
+
+.rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 14px;
+  background:
+    radial-gradient(circle at 7.5px 7px, #000 0 2px, transparent 2.5px) 0 0 / 15px 14px repeat-x,
+    var(--silver);
+  box-shadow:
+    inset 0 1px var(--white),
+    inset 0 -1px var(--shadow);
+}
+
+.rail-top {
+  top: 0;
+}
+
+.rail-bottom {
+  bottom: 0;
+}
+
+.row-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  color: #606060;
+  pointer-events: none;
+}
+
+.slot-ghost {
+  position: absolute;
+  border: 2px dotted var(--white);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.slot-ghost.blocked {
+  border-color: #ff0000;
+}
+
+/* ---------------------------------------------- module = 90s window */
+.module {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--silver);
+  box-shadow: var(--raised);
+  padding: 2px;
+  cursor: default;
+}
+
+.module.dragging {
+  outline: 1px dotted var(--black);
+}
+
+.module-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  height: 18px;
+  padding: 0 2px 0 3px;
+  cursor: move;
+  background: var(--navy);
+  color: var(--white);
+}
+
+.module:not(:hover) .module-head {
+  background: var(--navy);
+}
+
+/* little coloured "icon" in the category colour */
+.module-head::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border: 1px solid var(--black);
+  flex: none;
+}
+
+.module-title {
+  flex: 1;
+  font-weight: bold;
+  font-size: 11px;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.module-del {
+  width: 16px;
+  height: 14px;
+  padding: 0;
+  border: none;
+  background: var(--silver);
+  box-shadow: var(--raised);
+  color: var(--black);
+  font-weight: bold;
+  font-size: 11px;
+  line-height: 12px;
+  cursor: pointer;
+  flex: none;
+}
+
+.module-del:active {
+  box-shadow: var(--sunken);
+}
+
+.screw {
+  display: none;
+}
+
+.module-body {
+  flex: 1;
+  min-height: 0;
+  padding: 6px 4px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.module-body > .ports {
+  margin-top: auto;
+}
+
+.module-foot {
+  flex: none;
+  height: 16px;
+  line-height: 14px;
+  padding: 0 4px;
+  font-size: 10px;
+  color: var(--text);
+  box-shadow: var(--sunken);
+  border: 1px solid transparent;
+}
+
+.params {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4px 4px;
+}
+
+.custom-ui {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.custom-ui:has(.led-corner:only-child) {
+  position: absolute;
+  top: 26px;
+  right: 8px;
+}
+
+/* ------------------------------------------------------------ knobs */
+.ctl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: 40px;
+}
+
+.ctl-label {
+  font-size: 10px;
+  color: var(--text);
+  white-space: nowrap;
+  text-align: center;
+  line-height: 12px;
+}
+
+.ctl-value {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 12px;
+  min-width: 40px;
+  padding: 0 2px;
+  text-align: center;
+  white-space: nowrap;
+  background: var(--white);
+  box-shadow:
+    inset 1px 1px var(--shadow),
+    inset -1px -1px var(--white);
+  border: 1px solid var(--silver-lt);
+}
+
+.knob {
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+.knob svg {
+  display: block;
+  overflow: visible;
+}
+
+.knob-sm svg {
+  width: 28px;
+  height: 28px;
+}
+
+.knob-md svg {
+  width: 34px;
+  height: 34px;
+}
+
+.knob-lg svg {
+  width: 44px;
+  height: 44px;
+}
+
+.knob-track {
+  fill: none;
+  stroke: var(--shadow);
+  stroke-width: 8;
+}
+
+.knob-value {
+  fill: none;
+  stroke: var(--navy);
+  stroke-width: 8;
+}
+
+.knob-needle {
+  stroke: var(--black);
+  stroke-width: 7;
+  stroke-linecap: square;
+}
+
+.knob.active .ctl-value {
+  background: var(--navy);
+  color: var(--white);
+}
+
+/* ---------------------------------------------- checkboxes / choosers */
+.toggle {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  gap: 2px;
+  min-width: 0;
+}
+
+.toggle-led {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  background: var(--white);
+  box-shadow: var(--sunken);
+}
+
+.toggle.on .toggle-led::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 13px;
+  text-align: center;
+  color: var(--black);
+}
+
+.switch {
+  cursor: pointer;
+}
+
+/* drop-down "select box" look */
+.switch .lcd {
+  position: relative;
+  min-width: 58px;
+  padding: 0 18px 0 4px;
+  text-align: left;
+  font-family: var(--font-ui);
+  font-weight: normal;
+  font-size: 11px;
+  color: var(--black);
+  background: var(--white);
+}
+
+.switch .lcd::after {
+  content: '▼';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 14px;
+  font-size: 7px;
+  line-height: 14px;
+  text-align: center;
+  color: var(--black);
+  background: var(--silver);
+  box-shadow: var(--raised);
+}
+
+.lcd-big {
+  font-size: 18px;
+  line-height: 28px;
+  min-width: 100px;
+}
+
+/* -------------------------------------------------------------- LED */
+.led {
+  --lvl: 0;
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--black);
+  background: color-mix(in srgb, var(--led) calc(var(--lvl) * 100%), #303030);
+  flex: none;
+}
+
+.ui-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.clock-display {
+  justify-content: center;
+}
+
+/* ---------------------------------------------------------- jacks */
+.ports {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.port-group {
+  display: flex;
+  align-items: stretch;
+  gap: 3px;
+  padding: 4px 2px 2px;
+  border: 2px groove var(--white);
+}
+
+.port-out {
+  background: #a8a8a8;
+}
+
+.port-caption {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 9px;
+  font-weight: bold;
+  color: var(--text);
+  text-align: center;
+}
+
+.jacks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 2px 2px;
+  flex: 1;
+}
+
+.jack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: 28px;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.jack-socket {
+  --ring: #808080;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--black);
+  border: 3px solid var(--ring);
+  outline: 1px solid var(--black);
+}
+
+.jack.kind-gate .jack-socket {
+  --ring: #ff0000;
+}
+
+.jack.kind-cv .jack-socket {
+  --ring: #0000ff;
+}
+
+.jack.kind-audio .jack-socket {
+  --ring: #e0e0e0;
+}
+
+.jack:hover .jack-socket {
+  outline: 1px dotted var(--black);
+  outline-offset: 1px;
+}
+
+.jack-label {
+  font-size: 9px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.seek-in .jack[data-dir='in'] .jack-socket,
+.seek-out .jack[data-dir='out'] .jack-socket {
+  outline: 2px solid #ffff00;
+}
+
+.jack.hover-target .jack-socket {
+  outline: 3px solid #ff00ff !important;
+}
+
+/* ---------------------------------------------------------- cables */
+.cables {
+  --cable-opacity: 0.9;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100000;
+  overflow: visible;
+}
+
+.cable {
+  opacity: var(--cable-opacity);
+}
+
+.cable-temp {
+  opacity: 1;
+}
+
+.cable-shadow {
+  fill: none;
+  stroke: var(--black);
+  stroke-width: 6;
+  stroke-linecap: square;
+  transform: translate(-3px, -6px);
+}
+
+.cable-body {
+  fill: none;
+  stroke: var(--cable);
+  stroke-width: 4;
+  stroke-linecap: square;
+}
+
+.cable-shine {
+  display: none;
+}
+
+.cable-plug {
+  fill: var(--cable);
+  stroke: var(--black);
+  stroke-width: 2;
+  r: 5px;
+}
+
+.cable-temp .cable-body {
+  stroke-dasharray: 6 4;
+}
+
+/* ------------------------------------------------------- sequencer */
+.seq-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+  width: 100%;
+  padding: 5px 2px;
+  border: 2px groove var(--white);
+}
+
+.seq-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.seq-col .ctl {
+  min-width: 0;
+}
+
+.seq-col .ctl-value {
+  min-width: 30px;
+}
+
+.seq-col.inactive {
+  opacity: 0.35;
+}
+
+.seq-col .toggle .ctl-label,
+.seq-col .knob .ctl-label {
+  display: none;
+}
+
+/* -------------------------------------------------------- keyboard */
+.mini-keys {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  overflow: hidden;
+  background: var(--black);
+  box-shadow: var(--sunken);
+  border: 2px solid transparent;
+}
+
+.key {
+  position: absolute;
+  top: 0;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.key.white {
+  width: calc(100% / 15);
+  height: 100%;
+  background: var(--white);
+  border-right: 1px solid var(--black);
+}
+
+.key.black {
+  width: calc(100% / 15 * 0.62);
+  height: 60%;
+  background: var(--black);
+  z-index: 2;
+}
+
+.key.white.down,
+.key.black.down {
+  background: var(--navy);
+}
+
+.hint {
+  font-size: 9px;
+  color: var(--dim);
+}
+
+/* ----------------------------------------------------------- scope */
+.crt {
+  background: var(--black);
+  box-shadow: var(--sunken);
+  border: 2px solid transparent;
+}
+
+.scope-screen {
+  display: block;
+}
+
+.meter {
+  display: block;
+  margin: 0 auto;
+  background: var(--black);
+  box-shadow: var(--sunken);
+}
+
+/* ---------------------------------------------------- dialog box */
+.power-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 128, 128, 0.55);
+}
+
+.power-overlay.hidden {
+  display: none;
+}
+
+.power-card {
+  min-width: 340px;
+  background: var(--silver);
+  box-shadow:
+    var(--raised),
+    3px 3px 0 rgba(0, 0, 0, 0.6);
+  padding: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+.power-card::before {
+  content: attr(data-title);
+  display: block;
+  height: 18px;
+  line-height: 18px;
+  padding: 0 4px;
+  font-weight: bold;
+  color: var(--white);
+  background: var(--navy);
+}
+
+.power-card > * {
+  margin-left: 14px;
+  margin-right: 14px;
+}
+
+.logo-xl {
+  margin-top: 14px;
+  font-size: 30px;
+  text-align: center;
+}
+
+.power-sub {
+  font-size: 11px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.power-big {
+  align-self: center;
+  margin: 14px 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 110px;
+  justify-content: center;
+  font-weight: bold;
+  outline: 1px solid var(--black);
+}
+
+.power-big:disabled {
+  color: var(--dimmer);
+  cursor: not-allowed;
+}
+
+.power-hint {
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+/* ----------------------------------------- browser-style status bar */
+.toast {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  line-height: 16px;
+  padding: 1px 6px;
+  font-size: 11px;
+  color: var(--text);
+  background: var(--silver);
+  box-shadow: var(--sunken);
+  border-top: 1px solid var(--white);
+  display: none;
+  z-index: 2000;
+}
+
+.toast.show {
+  display: block;
+}
+
+/* ---------------------------------------------- yellow tooltip */
+.tooltip {
+  position: fixed;
+  z-index: 3000;
+  max-width: 280px;
+  padding: 2px 5px 3px;
+  background: #ffffe1;
+  color: var(--black);
+  border: 1px solid var(--black);
+  font-size: 11px;
+  pointer-events: none;
+  display: none;
+}
+
+.tooltip.show {
+  display: block;
+}
+
+.tip-head {
+  font-weight: bold;
+  margin-bottom: 1px;
+}
+
+.tip-line {
+  line-height: 1.35;
+}
+
+.tip-link {
+  color: var(--link);
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --sidebar-w: 160px;
+  }
+  .tagline,
+  .tb-label {
+    display: none;
+  }
+}

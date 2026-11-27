@@ -1,0 +1,9 @@
+apiVersion: v2
+name: voltrack
+description: VOLTRACK browser synthesizers — static web app served by unprivileged nginx
+type: application
+# Chart version — set from the git tag by the release pipeline
+version: 1.0.0
+# Default image tag when neither .Values.image.tag nor .Values.image.digest is set
+appVersion: '1.0.0'
+keywords: [synthesizer, web-audio, nginx, static-site]

@@ -1,0 +1,85 @@
+/* HALCYON VA-8 — reuses the ACIDLINE window/group-box styling */
+#va-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.unit.va-unit {
+  max-width: 1240px;
+}
+
+.unit.va-unit::before {
+  content: 'HALCYON VA-8 Virtual Analog Synthesizer';
+}
+
+.va-display-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+  margin-bottom: 14px;
+}
+
+.va-lcd {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  padding: 4px 10px;
+  font-size: 15px;
+  line-height: 19px;
+  min-height: 62px;
+}
+
+#lcd-3 {
+  font-size: 11px;
+  color: #00aa00;
+}
+
+.va-row {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.va-row-0 {
+  grid-template-columns: 1.2fr 1.2fr 1.3fr;
+}
+
+.va-row-1 {
+  grid-template-columns: 1.4fr 1.2fr 1fr 1.2fr;
+}
+
+.va-row-2 {
+  grid-template-columns: 1fr 1.15fr 0.8fr 1.9fr;
+}
+
+.va-row-3 {
+  grid-template-columns: 1.25fr 1.4fr 1.25fr 1fr 0.5fr;
+}
+
+.va-keys {
+  position: relative;
+  height: 86px;
+  margin-top: 4px;
+  background: #000;
+  box-shadow: var(--sunken);
+  border: 2px solid transparent;
+  overflow: hidden;
+}
+
+.va-keys .key.white {
+  height: 100%;
+  border-right: 1px solid #000;
+}
+
+.va-keys .key.black {
+  height: 58%;
+}
+
+@media (max-width: 1100px) {
+  .va-row {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}

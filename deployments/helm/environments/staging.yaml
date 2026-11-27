@@ -1,0 +1,21 @@
+# Staging: small and cheap, deployed on every push to main.
+replicaCount: 1
+
+podDisruptionBudget:
+  enabled: false
+
+networkPolicy:
+  enabled: true
+
+# Enable once you have an ingress controller + DNS (HTTPS is required for Web Audio):
+ingress:
+  enabled: false
+  # className: nginx
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt
+  # hosts:
+  #   - host: staging.voltrack.example.com
+  #     paths: [{ path: /, pathType: Prefix }]
+  # tls:
+  #   - secretName: voltrack-staging-tls
+  #     hosts: [staging.voltrack.example.com]

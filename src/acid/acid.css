@@ -1,0 +1,349 @@
+/* ============================================================
+   ACIDLINE BL-1 — 90s application window
+   ============================================================ */
+body {
+  overflow: auto;
+  background: var(--teal);
+}
+
+#acid-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.acid-top {
+  position: sticky;
+  top: 0;
+  height: var(--topbar-h);
+  flex: none;
+}
+
+.play-btn {
+  min-width: 76px;
+  font-weight: bold;
+}
+
+.bank {
+  gap: 2px;
+}
+
+.bank-btn {
+  width: 25px;
+  padding: 0;
+}
+
+.bank-btn.filled {
+  text-decoration: underline;
+}
+
+.bank-btn.active {
+  box-shadow: var(--sunken);
+  background: var(--white);
+  font-weight: bold;
+}
+
+/* ------------------------------------------------------- window */
+.acid-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 40px;
+}
+
+.unit {
+  display: flex;
+  flex-direction: column;
+  max-width: 1100px;
+  width: 100%;
+  background: var(--silver);
+  box-shadow:
+    var(--raised),
+    4px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 3px;
+}
+
+.unit::before {
+  content: 'ACIDLINE BL-1 Bassline Synthesizer';
+  display: block;
+  height: 18px;
+  line-height: 18px;
+  padding: 0 4px;
+  font-weight: bold;
+  color: var(--white);
+  background: var(--navy);
+}
+
+.unit-cheek {
+  display: none;
+}
+
+.unit-body {
+  padding: 10px 10px 8px;
+}
+
+.unit-row {
+  display: grid;
+  grid-template-columns: 1.6fr auto 1fr;
+  gap: 10px;
+  align-items: stretch;
+}
+
+/* fieldset-style group boxes */
+.bank-group,
+.seq-panel {
+  position: relative;
+  padding: 14px 8px 8px;
+  border: 2px groove var(--white);
+}
+
+.group-label {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  padding: 0 3px;
+  background: var(--silver);
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.knobs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 8px 10px;
+}
+
+.screen-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.acid-crt canvas {
+  display: block;
+}
+
+.status-lcd {
+  font-size: 13px;
+  line-height: 20px;
+  min-width: 210px;
+}
+
+/* ------------------------------------------------------ sequencer */
+.seq-panel {
+  margin-top: 14px;
+}
+
+.seq-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.seq-head .knobs {
+  flex: none;
+  gap: 8px 14px;
+}
+
+.seq-tools {
+  display: flex;
+  gap: 3px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+/* spreadsheet-like grid in a sunken white well */
+.roll {
+  display: grid;
+  grid-template-columns: 44px repeat(16, minmax(0, 1fr));
+  gap: 0;
+  background: var(--white);
+  box-shadow: var(--sunken);
+  border: 2px solid transparent;
+}
+
+.roll-label {
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 5px;
+  height: 17px;
+  background: var(--silver);
+  border-right: 1px solid var(--shadow);
+  border-bottom: 1px solid var(--shadow);
+}
+
+.roll-label.black {
+  background: #a0a0a0;
+}
+
+.roll-label.flag {
+  font-weight: bold;
+  height: 20px;
+}
+
+.roll-step-head {
+  height: 17px;
+  font-size: 10px;
+  line-height: 15px;
+  text-align: center;
+  background: var(--silver);
+  box-shadow: var(--raised);
+}
+
+.roll-step-head.playing {
+  background: #ffff00;
+  font-weight: bold;
+}
+
+.cell {
+  height: 17px;
+  background: var(--white);
+  border-right: 1px solid #c8c8c8;
+  border-bottom: 1px solid #c8c8c8;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.note-cell.black {
+  background: #ececec;
+}
+
+.cell.beat {
+  border-left: 1px solid var(--shadow);
+}
+
+.cell:hover {
+  background: #ccccff;
+}
+
+.cell.playing {
+  background: #ffffcc;
+}
+
+.note-cell.on {
+  background: var(--navy);
+}
+
+.note-cell.on.acc {
+  background: #ff0000;
+}
+
+.note-cell.on.playing {
+  outline: 2px solid #ffff00;
+  outline-offset: -2px;
+}
+
+.cell.inactive {
+  background-image: repeating-linear-gradient(45deg, transparent 0 3px, #c0c0c0 3px 4px);
+}
+
+.flag-cell {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--dimmer);
+  position: relative;
+  border-top: 1px solid var(--shadow);
+}
+
+.flag-acc.on {
+  background: #ff0000;
+}
+
+.flag-slide.on {
+  background: #0000ff;
+}
+
+.flag-slide.on.linked::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  width: 9px;
+  height: 3px;
+  margin-top: -1px;
+  background: #0000ff;
+  z-index: 1;
+}
+
+.flag-oct.on {
+  color: var(--white);
+  background: var(--navy);
+  font-weight: bold;
+}
+
+.acid-help {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 20px;
+  max-width: 1100px;
+  margin-top: 12px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: var(--white);
+}
+
+.acid-help b {
+  color: #ffff00;
+}
+
+@media (max-width: 1000px) {
+  .unit-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------- post-FX chain */
+.fx-row {
+  display: grid;
+  grid-template-columns: 1.25fr 1.25fr 1.4fr 1.2fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.fx-group {
+  padding-top: 16px;
+}
+
+.fx-group .knobs {
+  gap: 6px 6px;
+  justify-content: flex-start;
+}
+
+/* the ON checkbox sits inline in the caption, like <legend><input type=checkbox> */
+.fx-group .group-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.group-label .toggle {
+  flex-direction: row;
+}
+
+.group-label .toggle .ctl-label {
+  display: none;
+}
+
+.fx-group.off .knobs,
+.fx-group.classic .knobs > :not(:first-child) {
+  opacity: 0.45;
+}
+
+@media (max-width: 1100px) {
+  .fx-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}

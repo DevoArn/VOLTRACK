@@ -1,0 +1,22 @@
+VOLTRACK {{ .Values.image.tag | default .Chart.AppVersion }} deployed as release "{{ .Release.Name }}".
+
+Image: {{ include "voltrack.image" . }}
+{{- if .Values.ingress.enabled }}
+
+URL:
+{{- range .Values.ingress.hosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}/
+{{- end }}
+{{- else }}
+
+Try it locally (localhost is a secure context, which the Web Audio engine requires):
+  kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "voltrack.fullname" . }} 8080:{{ .Values.service.port }}
+  open http://localhost:8080/
+{{- end }}
+
+Verify the deployed build:
+  curl -s http://localhost:8080/version.json
+Run the built-in smoke test:
+  helm test {{ .Release.Name }} -n {{ .Release.Namespace }}
+
+NOTE: serve the app over HTTPS in production — browsers disable AudioWorklet on insecure origins.

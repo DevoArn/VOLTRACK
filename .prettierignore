@@ -1,0 +1,8 @@
+dist/
+coverage/
+playwright-report/
+test-results/
+node_modules/
+package-lock.json
+# Helm templates are Go templates, not plain YAML
+deployments/helm/**/templates/

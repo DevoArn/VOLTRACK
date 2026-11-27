@@ -1,0 +1,19 @@
+# Only what the build stage needs goes into the context
+node_modules
+dist
+coverage
+playwright-report
+test-results
+blob-report
+tests
+deployments/helm
+infra
+Doc
+.github
+.git
+*.md
+*.log
+Dockerfile
+docker-compose.yml
+.env
+.env.*

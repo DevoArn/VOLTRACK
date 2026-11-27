@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 ARG NODE_VERSION=24
-ARG NGINX_VERSION=1.27
+ARG NGINX_VERSION=1.31
 
 # ---------- build: runs on the native build platform; output is arch-independent static files
 FROM --platform=$BUILDPLATFORM node:${NODE_VERSION}-alpine AS build
@@ -23,6 +23,12 @@ LABEL org.opencontainers.image.title="voltrack" \
       org.opencontainers.image.version="${APP_VERSION}" \
       org.opencontainers.image.revision="${APP_GIT_SHA}" \
       org.opencontainers.image.created="${BUILD_DATE}"
+
+# Apply Alpine security fixes that landed after the upstream image was built
+# (the Trivy gate in CI fails on fixable CRITICALs), then drop back to uid 101.
+USER root
+RUN apk upgrade --no-cache
+USER 101
 
 COPY deployments/nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY deployments/nginx/security-headers.conf /etc/nginx/snippets/security-headers.conf
